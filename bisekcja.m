@@ -1,4 +1,4 @@
-function [convergent, tmpzerowe] = bisekcja(poly)
+function [convergent, bisectionroot] = bisekcja(poly,eps)
 
 convergent=true;
 %pierwsze przyblizenie
@@ -41,11 +41,11 @@ if polyval(poly,left)*polyval(poly,right)>0
     return
 end
 
+middle=(left+right)/2;
 %bisekcja
-for i=1:1000
-    middle=(left+right)/2;
+while polyval(poly,middle)>eps
     if (polyval(poly,middle))==0
-        tmpzerowe=middle;
+        bisectionroot=middle;
         return;
     end
     if polyval(poly,middle)*polyval(poly,right)>0
@@ -53,6 +53,7 @@ for i=1:1000
     else
         left=middle;
     end
+    middle=(left+right)/2;
 end
-tmpzerowe=(left+right)/2;
+bisectionroot=middle;
 end

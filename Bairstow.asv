@@ -25,7 +25,7 @@ while(length(poly)>3)
         i=i+1;
     end
     if i>iter
-        bisekcja(poly);
+        bisekcji
     end
     res=[roots([1; -x0(:)]);res];
     poly=deconv(poly, quadratic);

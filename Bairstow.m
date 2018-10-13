@@ -51,13 +51,12 @@ while length(poly)>3 && convergent
             % jezeli bisekcja zwróciła poprawny wynik, dodajemy go do
             % wektora wynikowego. W przeciwnym przypadku zakończymy
             % działanie programu
-            fprintf("bisekcaj")
             res=[res; bisectionroot];
             poly=deconv(poly, [1 -bisectionroot]);
-%             while polyval(poly, bisectionroot)<eps
-%                 % eliminujemy zera wielokrotne wielomianu poly
-%                 poly=deconv(poly, [1 ; -bisectionroot]);
-%             end
+             while polyval(poly, bisectionroot)<eps
+                 % eliminujemy zera wielokrotne wielomianu poly
+                 poly=deconv(poly, [1 ; -bisectionroot]);
+             end
         end
     else
         % za pomocą roots znajdujemy miejsca zerowe wielomianu kwadratowego
@@ -65,11 +64,18 @@ while length(poly)>3 && convergent
         quadraticroots=roots(quadratic);
         res=[quadraticroots; res];
         [poly, remainder]=deconv(poly, quadratic);
-%         remainder=remainder(end-1:end)
-%         norm(remainder)
-%         while(norm(remainder)<eps)
-%             [poly, remainder]=deconv(poly, quadratic);
-%         end
+        if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
+            while(norm(remainder)<eps)
+                [poly, remainder]=deconv(poly, quadratic);
+            end
+        else
+            while(polyval(poly, quadraticroots(1))<eps)
+                [poly, ~]=deconv(poly, [1 -quadraticroots(1)]);
+            end
+            while(polyval(poly, quadraticroots(2))<eps)
+                [poly, ~]=deconv(poly, [1 -quadraticroots(2)]);
+            end
+        end
     end
 end
 if ~convergent

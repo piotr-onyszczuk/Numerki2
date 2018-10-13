@@ -14,7 +14,7 @@ res=[];
 quadratic=[1; -x0];
 root=roots(quadratic);
 convergent=true;
-while length(poly)>3 && convergent
+while length(poly)>3 && convergent &&
     i=1;
     while polyval(poly,root(1))>eps &&  i<=iter
         [poly1, remainder] = deconv(poly, quadratic);
@@ -43,6 +43,7 @@ while length(poly)>3 && convergent
 end
 if ~convergent
     fprintf("Nie znaleziono wszystkich pierwiastków wielomianu");
+end
 if length(poly)<=3
     res=[roots(poly); res]
 end

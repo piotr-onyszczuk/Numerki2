@@ -1,5 +1,5 @@
 function [convergent, bisectionroot] = bisekcja(poly,eps)
-
+bisectionroot=0;
 convergent=true;
 %pierwsze przyblizenie
 x0=-poly(2)/poly(1); 

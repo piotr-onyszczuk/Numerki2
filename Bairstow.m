@@ -15,6 +15,8 @@ end
 if isempty(nomultiples)
     nomultiples=false;
 end
+warning('off', 'MATLAB:singularMatrix')
+warning('off', 'MATLAB:illConditionedMatrix')
 % Ustawiamy wektory początkowe
 x0 = x0(:);
 poly = poly(:);
@@ -34,13 +36,14 @@ while length(poly)>3 && convergent
         Br=x0(2)*A1;
         x0=x0-[Ar, A1; Br, B1]\remainder;
         [~, warn]=lastwarn;
-        if isequal(warn, 'MATLAB:singularMatrix')
+        %display(warn)
+        if isequal(warn, 'MATLAB:singularMatrix') || isequal(warn, 'MATLAB:illConditionedMatrix')
             % W przypadku wystąpienia osobliwej macierzy Jacobiego
             % symulujemy przekroczenie dozwolonej ilosci iteracji
             fprintf("singular")
+            %display(warn)
             i=iter+1;
             lastwarn('');
-            return;
         end
         quadratic=[1; -x0];
         [poly1, remainder] = deconv(poly, quadratic);
@@ -55,6 +58,7 @@ while length(poly)>3 && convergent
             % jezeli bisekcja zwróciła poprawny wynik, dodajemy go do
             % wektora wynikowego. W przeciwnym przypadku zakończymy
             % działanie programu
+            display('convergent')
             res=[res; bisectionroot];
             poly=deconv(poly, [1 -bisectionroot]);
             if ~nomultiples
@@ -63,6 +67,7 @@ while length(poly)>3 && convergent
                     poly=deconv(poly, [1 ; -bisectionroot]);
                 end
             end
+            quadratic=[1 0 0]';
         else
             return
         end

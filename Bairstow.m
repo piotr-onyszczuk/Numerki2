@@ -1,4 +1,4 @@
-function [res] = Bairstow(poly, x0, eps, iter)
+function [res] = Bairstow(poly, x0, eps, iter, nomultiples)
 % BAIRSTOW finds all roots of a polynomial using mainly Bairstow's method
 %
 % Syntax: function = Bairstow(coef, x0)
@@ -11,6 +11,9 @@ if isempty(eps)
 end
 if isempty(iter)
     iter=100;
+end
+if isempty(nomultiples)
+    nomultiples=false;
 end
 % Ustawiamy wektory początkowe
 x0 = x0(:);
@@ -37,6 +40,7 @@ while length(poly)>3 && convergent
             fprintf("singular")
             i=iter+1;
             lastwarn('');
+            return;
         end
         quadratic=[1; -x0];
         [poly1, remainder] = deconv(poly, quadratic);
@@ -53,10 +57,14 @@ while length(poly)>3 && convergent
             % działanie programu
             res=[res; bisectionroot];
             poly=deconv(poly, [1 -bisectionroot]);
-             while polyval(poly, bisectionroot)<eps
-                 % eliminujemy zera wielokrotne wielomianu poly
-                 poly=deconv(poly, [1 ; -bisectionroot]);
-             end
+            if ~nomultiples
+                while polyval(poly, bisectionroot)<eps
+                    % eliminujemy zera wielokrotne wielomianu poly
+                    poly=deconv(poly, [1 ; -bisectionroot]);
+                end
+            end
+        else
+            return
         end
     else
         % za pomocą roots znajdujemy miejsca zerowe wielomianu kwadratowego
@@ -64,16 +72,18 @@ while length(poly)>3 && convergent
         quadraticroots=roots(quadratic);
         res=[quadraticroots; res];
         [poly, remainder]=deconv(poly, quadratic);
-        if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
-            while(norm(remainder)<eps)
-                [poly, remainder]=deconv(poly, quadratic);
-            end
-        else
-            while(polyval(poly, quadraticroots(1))<eps)
-                [poly, ~]=deconv(poly, [1 -quadraticroots(1)]);
-            end
-            while(polyval(poly, quadraticroots(2))<eps)
-                [poly, ~]=deconv(poly, [1 -quadraticroots(2)]);
+        if ~nomultiples
+            if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
+                while(norm(remainder)<eps)
+                    [poly, remainder]=deconv(poly, quadratic);
+                end
+            else
+                while(polyval(poly, quadraticroots(1))<eps)
+                    [poly, ~]=deconv(poly, [1 -quadraticroots(1)]);
+                end
+                while(polyval(poly, quadraticroots(2))<eps)
+                    [poly, ~]=deconv(poly, [1 -quadraticroots(2)]);
+                end
             end
         end
     end

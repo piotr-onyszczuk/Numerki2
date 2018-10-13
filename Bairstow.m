@@ -58,7 +58,7 @@ while length(poly)>3 && convergent
             % jezeli bisekcja zwróciła poprawny wynik, dodajemy go do
             % wektora wynikowego. W przeciwnym przypadku zakończymy
             % działanie programu
-            display('convergent')
+            % display('convergent')
             res=[res; bisectionroot];
             poly=deconv(poly, [1 -bisectionroot]);
             if ~nomultiples

@@ -38,7 +38,7 @@ end
 %sprawdzenie czy znalezlismy odpowiedni przedzial
 if polyval(poly,left)*polyval(poly,right)>0 
     convergent = false;
-    return
+    return;
 end
 
 middle=(left+right)/2;

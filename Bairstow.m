@@ -80,11 +80,13 @@ while length(poly)>3 && convergent
         % znalezionego metodą Bairstowa
         quadraticroots=roots(quadratic);
         res=[quadraticroots; res];
-        [poly, remainder]=deconv(poly, quadratic);
+        [poly, ~]=deconv(poly, quadratic);
         if nomultiples
             if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
+                [~,remainder]=deconv(poly,quadratic);
                 while(norm(remainder)<eps)
-                    [poly, remainder]=deconv(poly, quadratic);
+                    [poly, ~]=deconv(poly, quadratic);
+                    [~,remainder]=deconv(poly,quadratic);
                 end
             else
                 while(abs(polyval(poly, quadraticroots(1)))<eps)

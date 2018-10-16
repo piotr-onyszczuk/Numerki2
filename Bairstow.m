@@ -1,9 +1,26 @@
-function [res] = Bairstow(poly, x0start, eps, eps2, iter, nomultiples)
-% BAIRSTOW finds all roots of a polynomial using mainly Bairstow's method
-%
-% Syntax: function = Bairstow(coef, x0)
-%
-% Long description
+function [res] = Bairstow(poly, x0, eps, eps2, iter, nomultiples)
+% BAIRSTOW znajduje miejsca zerowe wielomianu metodą Bairstowa
+% poly - wielomian, wektor współczynników przy potęgach w kolejności
+% malejącej, poly(1)!=0
+% x0 - początkowe współczynniki w trójmianie kw. przez który dzielimy
+% wielomian poly tzn. t^2-epspt-q=t^2-x0(1)*t-x0(2)
+% eps - dokładność wyników, jeśli norma 2 ze współczynników (poza 1) w
+% trójmianie kwadratowym jest mniejsza od eps to przyjmujemy, że ten
+% trójmian jest dzielnikiem wielomianu
+% eps2 - analogicznie jak eps, służy jednak eliminacji wielokrotnych zer
+% wielomianu. Jeśli nomultiples != true to eps2 nie jest istotny
+% iter - maksymalna ilość iteracji w głównej pętli metody, licznik zerowany
+% po znalezieniu nowego miejsca zerowego
+% nomultiples - zmienna logiczna, której wartość odpowiada na pytanie: czy
+% powtarzające się zera wielomianu powinny być zredukowane do jednego
+% wystąpienia w wektorze wyników
+% argumenty konieczne: poly, x0. W miejsce parametrów pominiętych należy
+% umieścić "[]" (pusty wektor).
+% BAIRSTOW wyznacza rzeczywiste oraz zespolone miejsca zerowe wielomianów
+% stopnia >=3 metodą Bairstowa, tj. przez poszukiwanie trójmianu kw.
+% t^2-pt-q który dzieli zadany wielomian z najmniejszą resztą. Poszukiwanie
+% odbywa się przez zastosowanie dwuwymiarowej metody Newtona względem
+% parametrów p i q.
 
 % Jeśli parametry nie zostały przekazane to ustawiamy domyślne
 if isempty(eps)
@@ -21,10 +38,10 @@ end
 warning('off', 'MATLAB:singularMatrix')
 warning('off', 'MATLAB:illConditionedMatrix')
 % Ustawiamy wektory początkowe
-x0 = x0start(:);
+x = x0(:);
 poly = poly(:);
 res=[];
-quadratic=[1; -x0];
+quadratic=[1; -x];
 convergent=true;
 while length(poly)>3 && convergent
     i=1;
@@ -35,20 +52,18 @@ while length(poly)>3 && convergent
         AB1=AB1(end-1:end);
         A1=AB1(1);
         B1=AB1(2);
-        Ar=x0(1)*A1+B1;
-        Br=x0(2)*A1;
-        x0=x0-[Ar, A1; Br, B1]\remainder;
+        Ar=x(1)*A1+B1;
+        Br=x(2)*A1;
+        x=x-[Ar, A1; Br, B1]\remainder;
         [~, warn]=lastwarn;
         %display(warn)
         if isequal(warn, 'MATLAB:singularMatrix') || isequal(warn, 'MATLAB:illConditionedMatrix')
             % W przypadku wystąpienia osobliwej macierzy Jacobiego
             % symulujemy przekroczenie dozwolonej ilosci iteracji
-            disp('singular')
-            %display(warn)
             i=iter+1;
             lastwarn('');
         end
-        quadratic=[1; -x0];
+        quadratic=[1; -x];
         [poly1, remainder] = deconv(poly, quadratic);
         remainder=remainder(end-1:end); % ostatnie dwa elementy reszty
         i=i+1;
@@ -76,8 +91,8 @@ while length(poly)>3 && convergent
             disp('metoda bisekcji tez nie znalazla miejsca zerowego')
             return
         end
-        x0=x0start(:);
-        quadratic=[1; -x0];
+        x=x0(:);
+        quadratic=[1; -x];
     else
         % za pomocą roots znajdujemy miejsca zerowe wielomianu kwadratowego
         % znalezionego metodą Bairstowa

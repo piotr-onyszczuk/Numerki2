@@ -1,4 +1,4 @@
-function [res] = Bairstow(poly, x0start, eps, iter, nomultiples)
+function [res] = Bairstow(poly, x0start, eps, eps2, iter, nomultiples)
 % BAIRSTOW finds all roots of a polynomial using mainly Bairstow's method
 %
 % Syntax: function = Bairstow(coef, x0)
@@ -7,7 +7,10 @@ function [res] = Bairstow(poly, x0start, eps, iter, nomultiples)
 
 % Jeśli parametry nie zostały przekazane to ustawiamy domyślne
 if isempty(eps)
-    eps=1e-6;
+    eps=1e-9;
+end
+if isempty(eps2)
+    eps2=1e-4;
 end
 if isempty(iter)
     iter=100;
@@ -40,7 +43,7 @@ while length(poly)>3 && convergent
         if isequal(warn, 'MATLAB:singularMatrix') || isequal(warn, 'MATLAB:illConditionedMatrix')
             % W przypadku wystąpienia osobliwej macierzy Jacobiego
             % symulujemy przekroczenie dozwolonej ilosci iteracji
-            fprintf("singular")
+            disp('singular')
             %display(warn)
             i=iter+1;
             lastwarn('');
@@ -53,7 +56,7 @@ while length(poly)>3 && convergent
     if i>iter 
         % W przypadku niepowodzenia metody Bairstowa używamy metody
         % bisekcji
-        % display('bisection')
+         disp('bisection')
         [convergent, bisectionroot]=bisekcja(poly, eps);
         if convergent 
             % jezeli bisekcja zwróciła poprawny wynik, dodajemy go do
@@ -63,14 +66,14 @@ while length(poly)>3 && convergent
             res=[res; bisectionroot];
             poly=deconv(poly, [1 -bisectionroot]);
             if nomultiples
-                while abs(polyval(poly, bisectionroot))<eps
+                while abs(polyval(poly, bisectionroot))<eps2
                     % eliminujemy zera wielokrotne wielomianu poly
                     poly=deconv(poly, [1 ; -bisectionroot]);
                 end
             end
             
         else
-            display('metoda bisekcji tez nie znalazla miejsca zerowego')
+            disp('metoda bisekcji tez nie znalazla miejsca zerowego')
             return
         end
         x0=x0start(:);
@@ -81,18 +84,19 @@ while length(poly)>3 && convergent
         quadraticroots=roots(quadratic);
         res=[quadraticroots; res];
         [poly, ~]=deconv(poly, quadratic);
+        %eliminujemy zera wielokrotne
         if nomultiples
             if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
                 [~,remainder]=deconv(poly,quadratic);
-                while(norm(remainder)<eps)
+                while norm(remainder)<eps2
                     [poly, ~]=deconv(poly, quadratic);
                     [~,remainder]=deconv(poly,quadratic);
                 end
             else
-                while(abs(polyval(poly, quadraticroots(1)))<eps)
+                while abs(polyval(poly, quadraticroots(1)))<eps2
                     [poly, ~]=deconv(poly, [1 -quadraticroots(1)]);
                 end
-                while(abs(polyval(poly, quadraticroots(2)))<eps)
+                while abs(polyval(poly, quadraticroots(2)))<eps2
                     [poly, ~]=deconv(poly, [1 -quadraticroots(2)]);
                 end
             end

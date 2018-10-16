@@ -1,5 +1,10 @@
 function [res] = Bairstow(poly, x0, eps, eps2, iter, nomultiples)
 % BAIRSTOW znajduje miejsca zerowe wielomianu metodą Bairstowa
+% BAIRSTOW wyznacza rzeczywiste oraz zespolone miejsca zerowe wielomianów
+% stopnia >=3 metodą Bairstowa, tj. przez poszukiwanie trójmianu kw.
+% t^2-pt-q który dzieli zadany wielomian z najmniejszą resztą. Poszukiwanie
+% odbywa się przez zastosowanie dwuwymiarowej metody Newtona względem
+% parametrów p i q.
 % poly - wielomian, wektor współczynników przy potęgach w kolejności
 % malejącej, poly(1)!=0
 % x0 - początkowe współczynniki w trójmianie kw. przez który dzielimy
@@ -16,11 +21,6 @@ function [res] = Bairstow(poly, x0, eps, eps2, iter, nomultiples)
 % wystąpienia w wektorze wyników
 % argumenty konieczne: poly, x0. W miejsce parametrów pominiętych należy
 % umieścić "[]" (pusty wektor).
-% BAIRSTOW wyznacza rzeczywiste oraz zespolone miejsca zerowe wielomianów
-% stopnia >=3 metodą Bairstowa, tj. przez poszukiwanie trójmianu kw.
-% t^2-pt-q który dzieli zadany wielomian z najmniejszą resztą. Poszukiwanie
-% odbywa się przez zastosowanie dwuwymiarowej metody Newtona względem
-% parametrów p i q.
 
 % Jeśli parametry nie zostały przekazane to ustawiamy domyślne
 if isempty(eps)
@@ -35,6 +35,7 @@ end
 if isempty(nomultiples)
     nomultiples=false;
 end
+% ukrywamy ostrzeżenia, które są przez program wyłapywane
 warning('off', 'MATLAB:singularMatrix')
 warning('off', 'MATLAB:illConditionedMatrix')
 % Ustawiamy wektory początkowe
@@ -56,10 +57,10 @@ while length(poly)>3 && convergent
         Br=x(2)*A1;
         x=x-[Ar, A1; Br, B1]\remainder;
         [~, warn]=lastwarn;
-        %display(warn)
         if isequal(warn, 'MATLAB:singularMatrix') || isequal(warn, 'MATLAB:illConditionedMatrix')
-            % W przypadku wystąpienia osobliwej macierzy Jacobiego
-            % symulujemy przekroczenie dozwolonej ilosci iteracji
+            % W przypadku wystąpienia osobliwej(lub niemal osobliwej) 
+            % macierzy Jacobiego symulujemy przekroczenie dozwolonej ilosci
+            % iteracji
             i=iter+1;
             lastwarn('');
         end
@@ -71,25 +72,21 @@ while length(poly)>3 && convergent
     if i>iter 
         % W przypadku niepowodzenia metody Bairstowa używamy metody
         % bisekcji
-         disp('bisection')
         [convergent, bisectionroot]=bisekcja(poly, eps);
         if convergent 
             % jezeli bisekcja zwróciła poprawny wynik, dodajemy go do
             % wektora wynikowego. W przeciwnym przypadku zakończymy
             % działanie programu
-            % display('convergent')
-            res=[res; bisectionroot];
+            res=[bisectionroot; res];
             poly=deconv(poly, [1 -bisectionroot]);
             if nomultiples
-                while abs(polyval(poly, bisectionroot))<eps2
+                while abs(polyval(poly, bisectionroot))<eps2 && length(poly)>=2
                     % eliminujemy zera wielokrotne wielomianu poly
                     poly=deconv(poly, [1 ; -bisectionroot]);
                 end
             end
-            
         else
-            disp('metoda bisekcji tez nie znalazla miejsca zerowego')
-            return
+            break
         end
         x=x0(:);
         quadratic=[1; -x];
@@ -97,30 +94,42 @@ while length(poly)>3 && convergent
         % za pomocą roots znajdujemy miejsca zerowe wielomianu kwadratowego
         % znalezionego metodą Bairstowa
         quadraticroots=roots(quadratic);
-        res=[quadraticroots; res];
+        if nomultiples && abs(quadratic(2)^2-4*quadratic(1)*quadratic(3))<eps2
+            res=[real(quadraticroots(1)); res];
+        else
+            res=[quadraticroots; res];
+        end
         [poly, ~]=deconv(poly, quadratic);
         %eliminujemy zera wielokrotne
         if nomultiples
-            if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
+            if quadratic(2)^2-4*quadratic(1)*quadratic(3) <= 0
                 [~,remainder]=deconv(poly,quadratic);
-                while norm(remainder)<eps2
+                while norm(remainder)<eps2 && length(poly)>=3
                     [poly, ~]=deconv(poly, quadratic);
                     [~,remainder]=deconv(poly,quadratic);
                 end
             else
-                while abs(polyval(poly, quadraticroots(1)))<eps2
-                    [poly, ~]=deconv(poly, [1 -quadraticroots(1)]);
+                while abs(polyval(poly, quadraticroots(1)))<eps2 && length(poly)>=2
+                    poly=deconv(poly, [1 -quadraticroots(1)]);
                 end
-                while abs(polyval(poly, quadraticroots(2)))<eps2
-                    [poly, ~]=deconv(poly, [1 -quadraticroots(2)]);
+                while abs(polyval(poly, quadraticroots(2)))<eps2 && length(poly)>=2
+                    poly=deconv(poly, [1 -quadraticroots(2)]);
                 end
             end
         end
     end
 end
 if ~convergent
-    fprintf("Nie znaleziono wszystkich pierwiastków wielomianu");
+    fprintf("Nie znaleziono wszystkich pierwiastków wielomianu. Zastosowanie innych parametrów początkowych może pomóc.");
 end
-if length(poly)<=3
+if nomultiples && length(poly)==3
+     quadraticroots=roots(poly);
+        if abs(quadratic(2)^2-4*quadratic(1)*quadratic(3))<eps2
+            res=[real(quadraticroots(1)); res];
+        else
+            res=[quadraticroots; res];
+        end
+else if length(poly)<=3
     res=[roots(poly); res];
+end
 end

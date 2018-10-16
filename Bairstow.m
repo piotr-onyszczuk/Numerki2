@@ -1,4 +1,4 @@
-function [res] = Bairstow(poly, x0, eps, iter, nomultiples)
+function [res] = Bairstow(poly, x0start, eps, iter, nomultiples)
 % BAIRSTOW finds all roots of a polynomial using mainly Bairstow's method
 %
 % Syntax: function = Bairstow(coef, x0)
@@ -18,7 +18,7 @@ end
 warning('off', 'MATLAB:singularMatrix')
 warning('off', 'MATLAB:illConditionedMatrix')
 % Ustawiamy wektory początkowe
-x0 = x0(:);
+x0 = x0start(:);
 poly = poly(:);
 res=[];
 quadratic=[1; -x0];
@@ -62,32 +62,35 @@ while length(poly)>3 && convergent
             % display('convergent')
             res=[res; bisectionroot];
             poly=deconv(poly, [1 -bisectionroot]);
-            if ~nomultiples
-                while polyval(poly, bisectionroot)<eps
+            if nomultiples
+                while abs(polyval(poly, bisectionroot))<eps
                     % eliminujemy zera wielokrotne wielomianu poly
                     poly=deconv(poly, [1 ; -bisectionroot]);
                 end
             end
-            quadratic=[1 0 0]';
+            
         else
+            display('metoda bisekcji tez nie znalazla miejsca zerowego')
             return
         end
+        x0=x0start(:);
+        quadratic=[1; -x0];
     else
         % za pomocą roots znajdujemy miejsca zerowe wielomianu kwadratowego
         % znalezionego metodą Bairstowa
         quadraticroots=roots(quadratic);
         res=[quadraticroots; res];
         [poly, remainder]=deconv(poly, quadratic);
-        if ~nomultiples
+        if nomultiples
             if quadratic(2)^2-4*quadratic(1)*quadratic(3) < 0
                 while(norm(remainder)<eps)
                     [poly, remainder]=deconv(poly, quadratic);
                 end
             else
-                while(polyval(poly, quadraticroots(1))<eps)
+                while(abs(polyval(poly, quadraticroots(1)))<eps)
                     [poly, ~]=deconv(poly, [1 -quadraticroots(1)]);
                 end
-                while(polyval(poly, quadraticroots(2))<eps)
+                while(abs(polyval(poly, quadraticroots(2)))<eps)
                     [poly, ~]=deconv(poly, [1 -quadraticroots(2)]);
                 end
             end

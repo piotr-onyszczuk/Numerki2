@@ -1,6 +1,6 @@
 function [convergent, bisectionroot] = bisekcja(poly,eps)
 bisectionroot=0;
-convergent=true;
+convergent=false;
 %pierwsze przyblizenie
 x0=-poly(2)/poly(1); 
 %stopien nieparzysty
@@ -37,7 +37,6 @@ end
 
 %sprawdzenie czy znalezlismy odpowiedni przedzial
 if polyval(poly,left)*polyval(poly,right)>0 
-    convergent = false;
     return;
 end
 
@@ -49,12 +48,18 @@ while abs(polyval(poly,middle))>eps
         return;
     end
     if polyval(poly,middle)*polyval(poly,right)>0
+        if right==middle
+            return;
+        end
         right=middle;
     else
+        if left==middle
+            return;
+        end
         left=middle;
     end
     middle=(left+right)/2;
 end
 bisectionroot=middle;
-
+convergent=true;
 end

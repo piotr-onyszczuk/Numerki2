@@ -43,8 +43,8 @@ end
 
 middle=(left+right)/2;
 %bisekcja
-while polyval(poly,middle)>eps
-    if (polyval(poly,middle))==0
+while abs(polyval(poly,middle))>eps
+    if polyval(poly,middle)==0
         bisectionroot=middle;
         return;
     end
@@ -56,4 +56,5 @@ while polyval(poly,middle)>eps
     middle=(left+right)/2;
 end
 bisectionroot=middle;
+
 end

@@ -53,6 +53,7 @@ while length(poly)>3 && convergent
     if i>iter 
         % W przypadku niepowodzenia metody Bairstowa używamy metody
         % bisekcji
+        % display('bisection')
         [convergent, bisectionroot]=bisekcja(poly, eps);
         if convergent 
             % jezeli bisekcja zwróciła poprawny wynik, dodajemy go do

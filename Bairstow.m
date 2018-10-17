@@ -129,7 +129,7 @@ if nomultiples && length(poly)==3
         else
             res=[quadraticroots; res];
         end
-else if length(poly)<=3
+elseif length(poly)<=3
     res=[roots(poly); res];
 end
 end

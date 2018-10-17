@@ -8,24 +8,31 @@ if (mod(length(poly),2)==0)
     %miejsce zerowe jest na lewo od x0
     if polyval(poly,x0)*poly(1)>0 
         right=x0;
-        left=x0-10;
+        %a - co ile odsuwamy sie od x0 szukaj¹c miejsca z przeciwnym
+        %znakiem
+        a=10;
+        left=x0-a;
         %szukamy miejsca z przeciwnym znakiem
         while polyval(poly,left)*poly(1)>0 
-            left=left-10;
+            left=left-a;
         end
     %miejsce zerowe jest na prawo od x0
     else 
+        %a - co ile odsuwamy sie od x0 szukaj¹c miejsca z przeciwnym
+        %znakiem
+        a=10;
         left=x0;
-        right=x0+10;
+        right=x0+a;
         while polyval(poly,right)*poly(1)<0
-            right=right+10;
+            right=right+a;
         end
     end
 
 %stopien parzysty
 else
-    %zaczynamy poszukiwania na lewo od x0
-    left=x0-100; 
+    %zaczynamy poszukiwania na lewo od x0 (N- jak daleko od x0)
+    N=100;
+    left=x0-N; 
     %bedziemy przesuwac sie o h
     h=0.5; 
     right=left+h;

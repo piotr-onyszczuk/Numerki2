@@ -13,7 +13,7 @@ for i=j
     vals=values(a,h,coefs,x0);
     errors(i)=norm(vals-f0);
 end
-plot(j,errors(j));
+semilogy(j,errors(j));
 title('B³êdy interpolacji');
 xlabel('Liczba wêz³ów');
 ylabel('Norma wektora b³êdów');

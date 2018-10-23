@@ -1,18 +1,17 @@
 %test
 a=0;
 b=100;
-n=100;
-n2=213;
-fun=@(x)x.^6-12.*x.^4;
-x=linspace(a,b,n);
-f=fun(x);
-f=f(:);
-h=(b-a)/(n-1);
-fbis0=0;
-fbisn=0;
-coefs=coefficients(h,f,fbis0,fbisn);
-y=linspace(a,b,n2);
-y=y(:);
-vals=values(a,h,coefs,y);
+fun=@(x)x.^2-12.*x;
+der=@(x)2.*x-12;
+%value of derivative in a and b
+da=der(a);
+db=der(b);
 
-plot(y,vals,x,f)
+subplot(2,2,1);
+wykres1;
+subplot(2,2,2);
+wykres2;
+subplot(2,2,3);
+wykres3;
+subplot(2,2,4)
+wykres4;

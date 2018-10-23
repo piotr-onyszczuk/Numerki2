@@ -1,5 +1,8 @@
 function [res] = coefficients(h, f, fbis0, fbisn)
-
+tmp=size(f);
+if tmp(1)==1
+    f=f(:);
+end
 n=length(f)-1;
 matrix=diag([6 4*ones(1,n-1) 6])+diag([0 ones(1,n-1)],1)+diag([ones(1,n-1) 0],-1);
 f(1)=f(1)-h*h*fbis0/6;

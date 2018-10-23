@@ -8,6 +8,7 @@ d_left=mod(tmp,h);
 d_right=h-d_left;
 n=length(coefficients);
 coefficients(n+1)=0;
+coefficients=coefficients';
 
 res=res+(coefficients(indexes-1)).*(d_right.^3);
 res=res+(coefficients(indexes)).*(h^3+3*h*h*d_right+3*h*(d_right.^2)-3*(d_right.^3));

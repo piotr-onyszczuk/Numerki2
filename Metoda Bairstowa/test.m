@@ -1,7 +1,7 @@
 %Error of the method
-x0=[0, 0];
-min_root=3;
-max_root=10;
+x0=[0, 0]; % starting point
+min_root=3; % initial polynomial degree
+max_root=10; % final polynomial degree
 results=zeros(max_root-min_root+1, 2);
 
 for i=min_root:max_root
@@ -34,8 +34,10 @@ xlabel('Stopień wielomianu (n)')
 legend('Bairstow', 'roots')
 axis([min_root max_root -inf inf])
 axis('auto y')
-%And now for something completely complex
-%LARCH
+% As before, but for polynomials in the form: x^n-1
+% Now we test mainly finding complex roots, which is the main use for
+% Bairstow's method
+% method's error
 min_root=3;
 max_root=16;
 results=zeros(max_root-min_root+1, 2);

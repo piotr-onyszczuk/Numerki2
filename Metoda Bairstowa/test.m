@@ -68,5 +68,4 @@ xlabel('Stopień wielomianu (n)')
 legend('Bairstow', 'roots')
 axis([min_root max_root -inf inf])
 axis('auto y')
-
-
+%----------------------------

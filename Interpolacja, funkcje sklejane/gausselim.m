@@ -1,4 +1,4 @@
-function [x] = melimination(A, b)
+function [x] = gausselim(A, b)
 %MELIMINATION Summary of this function goes here
 %   Detailed explanation goes here
 Ab=[A b];

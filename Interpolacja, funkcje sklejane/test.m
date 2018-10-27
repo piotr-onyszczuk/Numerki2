@@ -2,13 +2,13 @@
 a=0;
 b=100;
 fun=@(x)x.^2-12.*x;
-%der=@(x)2.*x-12;
-der=@(x) 2;
-%der=@(x)derivative(fun, x);
-%der=@(x)derivative(der, x);
+%Jedno należy zakomentować:
+der2=@(x) 2; %1: pochodna wyznaczona ręcznie, analitycznie
+%der1=@(x)derivative(fun, x);  %2: pochodna liczona numerycznie
+%der2=@(x)derivative(der1, x); %   numeryczna 2. pochodna
 %value of derivative in a and b
-da=der(a);
-db=der(b);
+da=der2(a);
+db=der2(b);
 
 subplot(2,2,1);
 wykres1;

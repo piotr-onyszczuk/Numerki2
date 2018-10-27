@@ -14,6 +14,6 @@ for i=j
     errors(i)=norm(vals-f0);
 end
 semilogy(j,errors(j));
-title('B³êdy interpolacji');
-xlabel('Liczba wêz³ów');
-ylabel('Norma wektora b³êdów');
+title('BÅ‚Ä™dy interpolacji');
+xlabel('Liczba wÄ™zÅ‚Ã³w');
+ylabel('Norma wektora bÅ‚Ä™dÃ³w');

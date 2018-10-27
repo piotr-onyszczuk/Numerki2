@@ -1,5 +1,5 @@
 error=abs(f-vals);
 plot(x,error);
-title('B³êdy bezwzglêdne przy 10 wêz³ach');
+title('BÅ‚Ä™dy bezwzglÄ™dne przy 10 wÄ™zÅ‚ach');
 xlabel('x');
-ylabel('Ró¿nica');
+ylabel('RÃ³Å¼nica');

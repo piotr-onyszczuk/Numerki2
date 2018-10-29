@@ -10,11 +10,9 @@ der2=@(x) 2; %1: pochodna wyznaczona ręcznie, analitycznie
 da=der2(a);
 db=der2(b);
 
-subplot(2,2,1);
+subplot(2,1,1);
 wykres1;
-subplot(2,2,2);
-wykres2;
 subplot(2,2,3);
+wykres2;
+subplot(2,2,4);
 wykres3;
-subplot(2,2,4)
-wykres4;

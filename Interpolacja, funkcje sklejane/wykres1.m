@@ -1,6 +1,6 @@
-%wykres interpolacji funkcji fun przy uzyciu 10 (n) rownoodleglych wezlow,
+%wykres interpolacji funkcji fun przy uzyciu n rownoodleglych wezlow,
 %wartosci sa liczone w n2 punktach
-n=10;
+n=100;
 n2=1000;
 x=linspace(a,b,n);
 h=(b-a)/(n-1);
@@ -17,7 +17,7 @@ vals=values(a,h,coefs,x);
 %wykres
 plot(x,fun(x),x,vals);
 grid on;
-title('Interpolacja funkcji na 10 wezlach');
+title('Interpolacja funkcji');
 xlabel('x');
 ylabel('y');
 legend('f(x)','interpolacja');

@@ -2,6 +2,6 @@
 error=abs(f-vals);
 plot(x,error);
 grid on;
-title('Bledy bezwzgledne przy 10 wezlach');
+title('Bledy bezwzgledne');
 xlabel('x');
 ylabel('Roznica');

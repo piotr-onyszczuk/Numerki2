@@ -1,7 +1,7 @@
 function [x] = gausselim(A, b)
 %GAUSSELIM Rozwiązuje układ równań Ax=b metodą eliminacji Gaussa
 %   A - macierz trójdiagonalna, diagonalnie dominująca
-%   b - wektor wyn
+%   b - wektor wyrazów wolnych
 %   gausselim przyjmuje tylko macierze A trójdiagonalne, diagonalnie
 %   dominujące. Dla nich eliminacja Gaussa jest wykonalna i numerycznie
 %   poprawna. Funkcja oblicza wynik wektorowo i w sposób zoptymalizowany do

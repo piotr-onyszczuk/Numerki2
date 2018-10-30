@@ -1,17 +1,23 @@
-grid on;
-
-n=10;
+%wykres interpolacji funkcji fun przy uzyciu n rownoodleglych wezlow,
+%wartosci sa liczone w n2 punktach
+n=80;
 n2=1000;
 x=linspace(a,b,n);
 h=(b-a)/(n-1);
-f=fun(x);
-coefs=coefficients(h,f,da,db);
+f=fun(x); 
+%wspolczynniki funkcji sklejanych
+coefs=coefficients(h,f,da,db); 
 
 x=linspace(a,b,n2);
-vals=values(a,h,coefs,x);
+%wartosci funkcji interpolowanej
 f=fun(x);
+%wartosci funkcji interpolujacej
+vals=values(a,h,coefs,x);
+
+%wykres
 plot(x,fun(x),x,vals);
-title('Interpolacja funkcji na 10 wezlach');
+grid on;
+title('Interpolacja funkcji');
 xlabel('x');
 ylabel('y');
 legend('f(x)','interpolacja');

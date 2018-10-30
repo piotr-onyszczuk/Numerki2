@@ -1,5 +1,7 @@
+%wykres bledow bezwzglednych miedzy wartosciami policzonymi w wykres1
 error=abs(f-vals);
 plot(x,error);
-title('Błędy bezwzględne przy 10 węzłach');
+grid on;
+title('Bledy bezwzgledne');
 xlabel('x');
-ylabel('Różnica');
+ylabel('Roznica');

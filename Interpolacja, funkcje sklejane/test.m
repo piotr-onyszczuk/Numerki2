@@ -3,9 +3,9 @@
 %fun na przedziale [a,b]
 a=2;
 b=100;
-fun=@(x)sin(x);
+fun=@(x)log(x);
 %Jedno nalezy zakomentowac:
-der2=@(x) -sin(x); %1: pochodna wyznaczona recznie, analitycznie
+der2=@(x) -1/(x^2); %1: pochodna wyznaczona recznie, analitycznie
 %der1=@(x)derivative(fun, x);  %2: pochodna liczona numerycznie
 %der2=@(x)derivative(der1, x); %   numeryczna 2. pochodna
 %wartosc pochodnej w a i b

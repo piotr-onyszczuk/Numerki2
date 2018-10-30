@@ -1,6 +1,6 @@
 %wykres interpolacji funkcji fun przy uzyciu n rownoodleglych wezlow,
 %wartosci sa liczone w n2 punktach
-n=100;
+n=80;
 n2=1000;
 x=linspace(a,b,n);
 h=(b-a)/(n-1);

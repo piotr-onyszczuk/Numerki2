@@ -1,5 +1,8 @@
-st=20; %poczatek badanego przedzialu iteracji
-en=200; %koniec badanego przedzialu iteracji
+%wyznaczanie normy wektora bledow w zaleznosci od ilosci wezlow uzytych do
+%interpolacji funkcji
+
+st=20; %poczatek badanego przedzialu ilosci wezlow
+en=200; %koniec ww przedzialu
 n2=100000; %ilosc punktow w ktorych liczone sa wartosci
 x0=linspace(a,b,n2);
 f0=fun(x0);
@@ -13,7 +16,10 @@ for i=j
     vals=values(a,h,coefs,x0);
     errors(i)=norm(vals-f0);
 end
+
+%wykres
 semilogy(j,errors(j));
-title('Błędy interpolacji');
-xlabel('Liczba węzłów');
-ylabel('Norma wektora błędów');
+grid on;
+title('Bledy interpolacji');
+xlabel('Liczba wezlow');
+ylabel('Norma wektora bledow');

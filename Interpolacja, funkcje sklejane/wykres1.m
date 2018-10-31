@@ -15,6 +15,7 @@ f=fun(x);
 vals=values(a,h,coefs,x);
 
 %wykres
+subplot(2,2,1);
 plot(x,fun(x),x,vals);
 grid on;
 title('Interpolacja funkcji');

@@ -18,7 +18,8 @@ for i=j
 end
 
 %wykres
-semilogy(j,errors(j));
+subplot(2,2,4);
+semilogy(j,errors(j),'.r');
 grid on;
 title('Bledy interpolacji');
 xlabel('Liczba wezlow');

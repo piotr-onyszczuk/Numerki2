@@ -1,8 +1,8 @@
 %test
 %badanie metody interpolacji funkcjami sklejanymi kubicznymi dla funkcji
 %fun na przedziale [a,b]
-a=-6;
-b=6;
+a=-60;
+b=60;
 fun=@(x)1./(1+x.^2);
 %Jedno nalezy zakomentowac:
 der2=@(x)(6.*x.^2-2)./((1+x.^2).^3); %1: pochodna wyznaczona recznie, analitycznie

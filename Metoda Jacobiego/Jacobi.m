@@ -74,11 +74,11 @@ eigenvalues=sort(diag(A));
 %debugowanie
 if debug==true
     plot (itertab, deviationtab, '.');
-    xlabel('numer obrotu');
+    xlabel('liczba wykonanych obrotow');
     ylabel('odchylenie od macierzy diagonalnej');
     fprintf("Wykonano %d obrotow\n",operations_counter);
     fprintf("oraz %d przejsc po calej macierzy.\n",while_counter);
-    fprintf("Funkcja wykonywala sie %d sekund. :(\n",time);
+    fprintf("Funkcja wykonywala sie %d sekund.\n",time);
     tic;
     matlab_eigenvalues=sort(eig(tmp));
     matlab_time=toc;

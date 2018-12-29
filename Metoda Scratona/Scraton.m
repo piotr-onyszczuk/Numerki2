@@ -23,14 +23,14 @@ end
 
 
 %rysowanie wykresu
-if (isempty(y) || nargin==3)
+if (nargin==3 || isempty(y))
     plot(x,values,'.');
     legend('wynik metody');
     xlabel('x');
     ylabel('y');
 else
-    plot(x,values,'.',x,y(x));
-    legend('wynik metody','rozwiazanie poprawne');
+    plot(x,values,'.',x,y(x), x, values-y(x));
+    legend('wynik metody','rozwiazanie poprawne', 'diff');
     xlabel('x');
     ylabel('y');
 end
